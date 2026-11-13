@@ -265,7 +265,7 @@ class MeterPainter extends CustomPainter {
       canvas.drawLine(Offset(x, size.height - (i == 0 ? 32 : 22)), Offset(x, size.height - 6), tick);
     }
     final x = center + cents.clamp(-50, 50) / 50 * (size.width / 2 - 18);
-    final needle = Paint()..color = !active ? muted : cents.abs() <= 1 ? mint : Colors.orangeAccent..strokeWidth = 4..strokeCap = StrokeCap.round;
+    final needle = Paint()..color = (!active ? muted : cents.abs() <= 1 ? mint : Colors.orangeAccent)..strokeWidth = 4..strokeCap = StrokeCap.round;
     canvas.drawLine(Offset(x, 5), Offset(x, size.height - 15), needle);
     canvas.drawCircle(Offset(x, 5), 5, Paint()..color = needle.color);
   }
