@@ -1,0 +1,42 @@
+name: Build GuitarTune Pro APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'guitar_tuner/**'
+      - '.github/workflows/guitar-tuner.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Generate Android Flutter project
+        run: flutter create --platforms=android --org com.guitartunepro --project-name guitar_tune_pro build_guitar_tune
+      - name: Apply GuitarTune Pro source
+        run: |
+          cp guitar_tuner/pubspec.yaml build_guitar_tune/pubspec.yaml
+          cp guitar_tuner/lib/main.dart build_guitar_tune/lib/main.dart
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('build_guitar_tune/android/app/src/main/AndroidManifest.xml')
+          s = p.read_text()
+          s = s.replace('<manifest ', '<manifest ', 1)
+          marker = '<application'
+          s = s.replace(marker, '    <uses-permission android:name="android.permission.RECORD_AUDIO"/>\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>\n    '+marker, 1)
+          p.write_text(s)
+          PY
+      - name: Install dependencies
+        working-directory: build_guitar_tune
+        run: flutter pub get
+      - name: Build release APK
+        working-directory: build_guitar_tune
+        run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GuitarTune-Pro-Android-APK
+          path: build_guitar_tune/build/app/outputs/flutter-apk/app-release.apk
