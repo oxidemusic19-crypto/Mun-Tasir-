@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 
-void main() => runApp(const GuitarTuneApp());
+void main() => runApp(const Mun TunerApp());
 
 const bg = Color(0xFF090D16);
 const panel = Color(0xFF151D2B);
@@ -98,12 +98,12 @@ Pitch? detectPitch(Uint8List bytes, int sampleRate) {
   return Pitch(hz, name, cents);
 }
 
-class GuitarTuneApp extends StatelessWidget {
-  const GuitarTuneApp({super.key});
+class Mun TunerApp extends StatelessWidget {
+  const Mun TunerApp({super.key});
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
-    title: 'GuitarTune Pro',
+    title: 'Mun Tuner',
     theme: ThemeData.dark().copyWith(
       scaffoldBackgroundColor: bg,
       colorScheme: ColorScheme.fromSeed(seedColor: mint, brightness: Brightness.dark),
@@ -189,8 +189,8 @@ class _TunerPageState extends State<TunerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bg,
-        title: const Row(children: [Icon(Icons.graphic_eq, color: mint), SizedBox(width: 10), Text('GuitarTune Pro', style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: .3))]),
-        actions: [IconButton(onPressed: () => showAboutDialog(context: context, applicationName: 'GuitarTune Pro', applicationVersion: '0.1.0', children: const [Text('A microphone-based guitar tuner. Accuracy depends on your phone microphone, string condition and background noise.')]), icon: const Icon(Icons.info_outline))],
+        title: const Row(children: [Icon(Icons.graphic_eq, color: mint), SizedBox(width: 10), Text('Mun Tuner', style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: .3))]),
+        actions: [IconButton(onPressed: () => showAboutDialog(context: context, applicationName: 'Mun Tuner', applicationVersion: '0.1.0', children: const [Text('A microphone-based guitar tuner. Accuracy depends on your phone microphone, string condition and background noise.')]), icon: const Icon(Icons.info_outline))],
       ),
       body: SafeArea(child: ListView(padding: const EdgeInsets.fromLTRB(18, 4, 18, 28), children: [
         Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: panel, borderRadius: BorderRadius.circular(18)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
