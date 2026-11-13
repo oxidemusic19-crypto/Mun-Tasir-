@@ -31,7 +31,7 @@ jobs:
           text = path.read_text()
           if 'android.permission.INTERNET' not in text:
               text = text.replace('<manifest ', '<manifest xmlns:tools="http://schemas.android.com/tools" ', 1)
-              text = text.replace('<application', '<uses-permission android:name="android.permission.INTERNET" />\\n    <application', 1)
+              text = text.replace('<application', '<uses-permission android:name="android.permission.INTERNET" />\n    <application', 1)
           if 'android:usesCleartextTraffic' not in text:
               text = text.replace('<application', '<application android:usesCleartextTraffic="true"', 1)
           path.write_text(text)
