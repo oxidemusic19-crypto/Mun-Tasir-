@@ -31,10 +31,21 @@ jobs:
           yes | "$SDKMANAGER" "platforms;android-36" || true
           python3 - <<'PY'
           from pathlib import Path
-          path = Path('android/app/build.gradle.kts')
-          text = path.read_text()
-          text = text.replace('compileSdk = flutter.compileSdkVersion', 'compileSdk = 36')
-          path.write_text(text)
+          candidates = [Path('android/app/build.gradle.kts'), Path('android/app/build.gradle')]
+          changed = False
+          for path in candidates:
+              if not path.exists():
+                  continue
+              text = path.read_text()
+              updated = text.replace('compileSdk = flutter.compileSdkVersion', 'compileSdk = 36')
+              updated = updated.replace('compileSdk flutter.compileSdkVersion', 'compileSdk 36')
+              updated = updated.replace('compileSdkVersion flutter.compileSdkVersion', 'compileSdkVersion 36')
+              if updated != text:
+                  path.write_text(updated)
+                  changed = True
+                  print(f'Updated compile SDK in {path}')
+          if not changed:
+              raise SystemExit('Could not find Flutter compileSdkVersion setting in Android app Gradle file')
           PY
 
       - name: Configure local network permissions
