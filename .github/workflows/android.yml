@@ -8,19 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-
       - name: Generate Android project
         run: flutter create --platforms=android --project-name=partysync .
-
       - name: Set Android compile SDK
         run: |
           SDKMANAGER="$(find "$ANDROID_HOME" -type f -name sdkmanager | head -n 1)"
@@ -32,20 +28,23 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-          paths = [Path('android/app/build.gradle'), Path('android/app/build.gradle.kts')]
-          found = False
-          for path in paths:
-              if not path.exists():
-                  continue
-              text = path.read_text()
-              updated, count = re.subn(r'(?m)^(\\s*compileSdk(?:Version)?\\s*(?:=\\s*)?)(?:flutter\\.compileSdkVersion|\\d+)', r'\\g<1>36', text)
-              if count:
-                  path.write_text(updated)
-                  found = True
-                  print(f'Updated {path}: compileSdk set to 36')
-                  print(''.join(line for line in updated.splitlines(True) if 'compileSdk' in line))
-          if not found:
-              raise SystemExit('ERROR: compileSdk setting not found or not updated')
+          path = Path('android/app/build.gradle.kts')
+          if not path.exists():
+              path = Path('android/app/build.gradle')
+          if not path.exists():
+              raise SystemExit('ERROR: app Gradle file not found')
+          text = path.read_text()
+          updated, count = re.subn(
+              r'(?m)^(\s*compileSdk(?:Version)?\s*(?:=\s*)?)(?:flutter\.compileSdkVersion|\d+)',
+              r'\g<1>36',
+              text
+          )
+          if count == 0:
+              print(text)
+              raise SystemExit('ERROR: compileSdk setting not found')
+          path.write_text(updated)
+          print(f'Updated {path}: compileSdk set to 36')
+          print(''.join(line for line in updated.splitlines(True) if 'compileSdk' in line))
           PY
       - name: Configure local network permissions
         run: |
@@ -59,13 +58,10 @@ jobs:
               text = text.replace('<application', '<application android:usesCleartextTraffic="true"', 1)
           path.write_text(text)
           PY
-
       - name: Install dependencies
         run: flutter pub get
-
       - name: Build APK
         run: flutter build apk --release
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
