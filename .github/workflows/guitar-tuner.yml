@@ -21,6 +21,10 @@ jobs:
         run: |
           cp guitar_tuner/pubspec.yaml build_guitar_tune/pubspec.yaml
           cp guitar_tuner/lib/main.dart build_guitar_tune/lib/main.dart
+          mkdir -p build_guitar_tune/android/app/src/main/res/drawable
+          mkdir -p build_guitar_tune/android/app/src/main/res/mipmap-anydpi-v26
+          cp guitar_tuner/android/mun_tuner_icon.xml build_guitar_tune/android/app/src/main/res/drawable/mun_tuner_icon.xml
+          cp guitar_tuner/android/ic_launcher.xml build_guitar_tune/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
           python3 - <<'PY'
           from pathlib import Path
           p = Path('build_guitar_tune/android/app/src/main/AndroidManifest.xml')
