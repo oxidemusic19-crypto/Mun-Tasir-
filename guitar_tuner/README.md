@@ -1,4 +1,4 @@
-# GuitarTune Pro
+# Mun Tuner
 
 A Flutter acoustic/electric guitar tuner with microphone-based live pitch detection.
 
@@ -10,7 +10,7 @@ A Flutter acoustic/electric guitar tuner with microphone-based live pitch detect
 - Local microphone pitch analysis; no account or internet connection required
 
 ## Build
-The GitHub Actions workflow **Build GuitarTune Pro APK** creates a Flutter Android project, applies this app source, and builds a release APK. Download it from the workflow run's Artifacts section.
+The GitHub Actions workflow **Build Mun Tuner APK** creates a Flutter Android project, applies this app source, and builds a release APK. Download it from the workflow run's Artifacts section.
 
 ## Accuracy notes
 The tuner uses windowed autocorrelation with parabolic peak interpolation and short median smoothing. Real-world accuracy depends on microphone response, ambient noise, string harmonics and the instrument. For best results, use a quiet room, mute unused strings and pluck gently. A displayed cent value is an estimate, not a laboratory calibration guarantee.
