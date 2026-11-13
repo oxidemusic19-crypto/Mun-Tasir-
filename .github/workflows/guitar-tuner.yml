@@ -1,4 +1,4 @@
-name: Build GuitarTune Pro APK
+name: Build Mun Tuner APK
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
           channel: stable
       - name: Generate Android Flutter project
         run: flutter create --platforms=android --org com.guitartunepro --project-name guitar_tune_pro build_guitar_tune
-      - name: Apply GuitarTune Pro source
+      - name: Apply Mun Tuner source
         run: |
           cp guitar_tuner/pubspec.yaml build_guitar_tune/pubspec.yaml
           cp guitar_tuner/lib/main.dart build_guitar_tune/lib/main.dart
@@ -28,6 +28,7 @@ jobs:
           s = s.replace('<manifest ', '<manifest ', 1)
           marker = '<application'
           s = s.replace(marker, '    <uses-permission android:name="android.permission.RECORD_AUDIO"/>\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>\n    '+marker, 1)
+          s = s.replace('android:label="build_guitar_tune"', 'android:label="Mun Tuner"')
           p.write_text(s)
           PY
       - name: Install dependencies
@@ -38,5 +39,5 @@ jobs:
         run: flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
-          name: GuitarTune-Pro-Android-APK
+          name: Mun Tuner-Pro-Android-APK
           path: build_guitar_tune/build/app/outputs/flutter-apk/app-release.apk
