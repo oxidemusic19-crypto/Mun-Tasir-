@@ -39,7 +39,7 @@ const tunings = <Tuning>[
 
 const noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 final Map<String, double> noteFreq = {
-  for (int midi = 24; midi <= 95; midi++)
+  for (int midi = 20; midi <= 100; midi++)
     '${noteNames[midi % 12]}${midi ~/ 12 - 1}': 440 * pow(2, (midi - 69) / 12).toDouble(),
 };
 
