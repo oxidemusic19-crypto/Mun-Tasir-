@@ -179,7 +179,7 @@ class _TunerPageState extends State<TunerPage> {
     super.dispose();
   }
 
-  double get cents => pitch?.cents ?? 0;
+  double get cents => pitch == null ? 0 : chromatic ? pitch!.cents : 1200 * log(pitch!.hz / noteFreq[targetString]!) / ln2;
   String get verdict => pitch == null ? '—' : cents.abs() <= 1 ? 'PERFECT' : cents < 0 ? 'TOO LOW · TIGHTEN' : 'TOO HIGH · LOOSEN';
   String get targetString => tuning.strings[selectedString];
 
